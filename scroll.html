@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="demo/js/jquery-1.7.2.min.js"></script>
+    <title>Document</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        #f {
+            position: relative;
+            overflow: auto;
+            width: 100%;
+        }
+
+
+        @media (min-width: 320px) {
+            #a {
+                width: 320px;
+                height: 1000px;
+                background-color: saddlebrown;
+                margin: 0 auto;
+
+
+            }
+        }
+
+        @media (min-width: 640px) {
+            #a {
+                width: 480px;
+                height: 1000px;
+                background-color: saddlebrown;
+                margin: 0 auto;
+
+            }
+        }
+
+        @media (min-width: 1200px) {
+            #a {
+                width: 640px;
+                height: 1000px;
+                background-color: saddlebrown;
+                margin: 0 auto;
+
+            }
+        }
+
+        button {
+            position: sticky;
+            top: 0;
+        }
+
+        .box {
+
+            margin-left: 10px;
+            border: #333 1px solid;
+            box-shadow: -5px 5px 10px 0px #EAEAC7;
+
+
+        }
+
+        #b1,
+        #b2,
+        #b3 {
+            float: left;
+        }
+
+        .boxs {
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="f">
+        <div id="a">
+            <div id="b1">
+                <div class="box box1" id="box1">
+                    <img src="demo/images/i_01.jpg" alt="" id="b1i" width="100%">
+                </div>
+            </div>
+            <div id="b2">
+                <div class="box box2" id="box2">
+                    <img src="demo/images/i_top1.jpg" alt="" id="b2i" width="100%">
+                </div>
+            </div>
+            <div id="b3">
+                <div class="box box3" id="box3">
+                    <img src="demo/images/dingzhi1.png" alt="" id="b2i" width="100%">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        /**测试用图片地址**/
+        var imgsrc1 = "demo/images/i_01.jpg";
+        var imgsrc2 = "demo/images/i_top1.jpg";
+        var imgsrc3 = "demo/images/dingzhi1.png";
+        /*****/
+        var h = window.innerHeight || document.documentElement.clientHeight;//获取可见屏幕高度
+        document.getElementById("f").style.height = h + "px";//设置外盒子高度占满全屏
+
+        /******************计算每个图片容器的位置************************/
+        var contentwid = document.getElementById("a").offsetWidth;
+        var boxswid = contentwid / 3 - 5 * 3;//算出每个box的宽度
+        console.log(boxswid);
+        var boxs = document.getElementsByClassName("box");
+        for (var i = 0; i < boxs.length; i++) {
+            boxs[i].style.width = boxswid + "px";//给每个图片盒子设置宽度
+        }
+
+
+        /////////////////////////////////////////////////////填盒子设置
+        var imgbox1 = document.getElementById("b1");
+  
+        var maxVbox = Math.round((h -imgbox1.offsetHeight)/boxs[0].offsetHeight);//计算当前屏幕高度可以放几个最大图片
+        console.log("最大" + maxVbox+","+(h -imgbox1.offsetHeight)+","+boxs[1].offsetHeight);
+
+        for (var i = 0; i < maxVbox; i++) {//填满当前屏幕
+            var newImgBox1 = document.createElement("div");
+            var newImg1 = document.createElement("img");
+            newImgBox1.className = "box box1";
+            newImg1.src = imgsrc1;
+            newImg1.style.width = "100%";
+            ///////
+            newImgBox1.style.width = boxswid + "px";
+            newImgBox1.appendChild(newImg1);
+            imgbox1.appendChild(newImgBox1);
+
+        }
+
+        /**************************************************************/
+
+        document.getElementById("f").onscroll = function () {
+
+            var oh = document.getElementById("a").offsetHeight;//高度
+            var ch = document.body.clientHeight;//网页的可视高度
+            var st = document.getElementById("f").scrollTop;//滚动高度
+            if (oh < 20000) {
+                if (ch + st >= oh) {        //网页达到最低端，增加高度
+                    console.log("超过");
+                    document.getElementById("a").style.height = (oh + 100) + "px";
+                    /*******************增加内容*******************/
+
+                    /**************重新计算新增高度+剩余高度可以放置div的个数********/
+                    var Vboxh = document.getElementById("b1").offsetHeight;
+                    var VboxCount = Math.round((oh - Vboxh) / boxswid);
+                    console.log(VboxCount);
+                    //////////////////////////////////////////////////////////////
+
+                    for (var i = 0; i < VboxCount; i++) {
+                        var newImgBox1 = document.createElement("div");
+                        var newImg1 = document.createElement("img");
+                        newImgBox1.className = "box box1";
+                        newImg1.src = imgsrc1;
+                        newImg1.style.width = "100%";
+                        ///////
+                        newImgBox1.style.width = boxswid + "px";
+                        newImgBox1.appendChild(newImg1);
+                        imgbox1.appendChild(newImgBox1);
+
+
+                    }
+                }
+            }
+            else {
+                console.log("到底了");
+            }
+            //console.log(oh + "," + st + "," + ch);
+        }
+
+
+    </script>
+</body>
+
+</html>
